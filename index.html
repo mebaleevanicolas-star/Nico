@@ -777,7 +777,7 @@
         .soccer-canvas-wrap{width:min(100%,780px);min-height:0;flex:1 1 auto;display:flex;align-items:center;justify-content:center}
         #soccer-punch-canvas{display:block;width:100%;max-width:760px;height:auto;aspect-ratio:16/9;border:2px solid rgba(212,175,55,.82);border-radius:12px;box-shadow:0 0 0 2px rgba(0,0,0,.3),0 0 28px rgba(212,175,55,.25);background:#178d2b;cursor:crosshair;touch-action:none;user-select:none}
         .soccer-controls{width:min(100%,760px);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;flex:0 0 auto}.soccer-control-btn{border:1px solid rgba(212,175,55,.65);background:rgba(15,30,60,.86);color:#f3e5ab;padding:6px 11px;border-radius:18px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.7rem;transition:.2s ease}.soccer-control-btn:hover{transform:translateY(-1px);background:rgba(30,58,138,.82);box-shadow:0 0 12px rgba(212,175,55,.25)}.soccer-control-btn.danger{border-color:rgba(248,113,113,.7);color:#fecaca}
-        .soccer-help{width:min(100%,760px);text-align:center;color:rgba(255,255,255,.62);font-size:.62rem;line-height:1.35;flex:0 0 auto}.soccer-round-badge{display:inline-flex;align-items:center;gap:5px;margin-left:6px;padding:2px 7px;border-radius:10px;background:rgba(30,58,138,.5);border:1px solid rgba(212,175,55,.32);color:#f3e5ab;font-size:.62rem}
+        .soccer-help{width:min(100%,760px);text-align:center;color:rgba(255,255,255,.62);font-size:.62rem;line-height:1.35;flex:0 0 auto}.soccer-remote{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;width:min(100%,760px);flex:0 0 auto}.soccer-remote-btn{min-width:42px;height:34px;border:1px solid rgba(212,175,55,.5);border-radius:10px;background:rgba(15,30,60,.9);color:#f3e5ab;font:700 .72rem 'Montserrat',sans-serif;cursor:pointer;touch-action:manipulation}.soccer-remote-btn:active{transform:scale(.94);background:rgba(30,58,138,.9)}.soccer-remote-btn.soccer-ok{min-width:52px}.soccer-remote-btn.soccer-back{min-width:82px}.soccer-round-badge{display:inline-flex;align-items:center;gap:5px;margin-left:6px;padding:2px 7px;border-radius:10px;background:rgba(30,58,138,.5);border:1px solid rgba(212,175,55,.32);color:#f3e5ab;font-size:.62rem}
         @media (max-height:760px){.soccer-stage{gap:5px;padding:3px}.soccer-header{padding:5px 9px}.soccer-control-btn{padding:5px 9px}.soccer-help{font-size:.58rem}}
 
     </style>
@@ -871,13 +871,27 @@
                     <!-- SOCCER PUNCH — remplace la zone de chat pendant la partie -->
                     <div class="soccer-stage" id="soccer-stage">
                         <div class="soccer-header">
-                            <div class="soccer-title">⚽ SOCCER PUNCH <span class="soccer-round-badge" id="soccer-round-badge">Tour 1/20</span></div>
+                            <div class="soccer-title">⚽ SOCCER PUNCH <span class="soccer-round-badge" id="soccer-round-badge">⏱ 10:00</span></div>
                             <div class="soccer-score"><span>Toi <strong id="soccer-user-score">0</strong></span><span>•</span><span>Jarvis <strong id="soccer-jarvis-score">0</strong></span></div>
                             <div class="soccer-status" id="soccer-status">Choisis un joueur bleu.</div>
                         </div>
                         <div class="soccer-canvas-wrap"><canvas id="soccer-punch-canvas" width="960" height="540" aria-label="Terrain Soccer Punch"></canvas></div>
-                        <div class="soccer-controls"><button class="soccer-control-btn" onclick="restartSoccerPunchGame()">↻ Nouvelle partie</button><button class="soccer-control-btn danger" onclick="exitSoccerPunchGame()">✕ Quitter</button></div>
-                        <div class="soccer-help">Clique/maintiens un joueur bleu, tire dans la direction voulue puis relâche pour le propulser. <b>Puissance = longueur du geste.</b> Souris, tactile et clavier <b>R</b>/<b>Échap</b> pris en charge.</div>
+                        <div class="soccer-controls">
+                            <button class="soccer-control-btn" onclick="restartSoccerPunchGame()">↻ Nouvelle partie</button>
+                            <button class="soccer-control-btn danger" onclick="exitSoccerPunchGame()">✕ Quitter</button>
+                        </div>
+                        <div class="soccer-remote" aria-label="Télécommande Soccer Punch">
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowUp">▲</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowLeft">◀</button>
+                            <button class="soccer-remote-btn soccer-ok" data-soccer-key="Enter">OK</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowRight">▶</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowDown">▼</button>
+                            <button class="soccer-remote-btn soccer-back" data-soccer-key="Backspace">↩ RETOUR</button>
+                        </div>
+                        <div class="soccer-help">
+                            <b>TV / PC :</b> ↑ ↓ pour naviguer et orienter la flèche à 360°, ← → pour régler la puissance, <b>OK / Entrée</b> pour valider, <b>Retour / Backspace</b> pour annuler.
+                            <br><b>Mobile :</b> touche un joueur, fais tourner la flèche avec ton doigt, puis retouche le joueur pour passer à la puissance. Touche un autre joueur pour changer de joueur.
+                        </div>
                     </div>
 
                     <div class="score-board" id="score-board">
@@ -4406,7 +4420,7 @@
             }
 
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            if (mode === 'game_menu' || mode === 'chifoumi' || mode === 'marbles' || mode === 'checkers_setup' || mode === 'checkers' || mode === 'chess_setup' || mode === 'chess' || mode === 'soccer_punch') {
+            if (mode === 'game_menu' || mode === 'chifoumi' || mode === 'marbles' || mode === 'checkers_setup' || mode === 'checkers' || mode === 'chess_setup' || mode === 'chess' || mode === 'soccer_setup' || mode === 'soccer_punch') {
                 document.getElementById('nav-game').classList.add('active');
             } else {
                 document.getElementById(`nav-${mode}`).classList.add('active');
@@ -4500,6 +4514,22 @@
             }
             else if (mode === 'chess') {
                 startChessGame();
+            }
+            else if (mode === 'soccer_setup') {
+                scoreBoard.style.display = 'none';
+                currentMode = 'soccer_setup';
+                soccerPunch.setupStep = 'difficulty';
+                hideSoccerPunchBoard();
+                updateInputsVisibility();
+                document.getElementById('badge-mode').innerText = 'Mode: Soccer Punch • Configuration';
+                jarvisReplyWithDelay(
+                    "Excellent choix ⚽ ! Avant de commencer, choisis le niveau de Jarvis :<br><br>" +
+                    "<b>a</b> — Facile 🟢<br>" +
+                    "<b>b</b> — Moyen 🟡<br>" +
+                    "<b>c</b> — Difficile 🔴",
+                    'happy',
+                    '😊 Happy'
+                );
             }
             else if (mode === 'soccer_punch') {
                 scoreBoard.style.display = 'none';
@@ -4892,13 +4922,66 @@
                 } else if (commandVal === 'd') {
                     switchMode('chess_setup');
                 } else if (commandVal === 'e') {
-                    switchMode('soccer_punch');
+                    switchMode('soccer_setup');
                 } else {
                     jarvisReplyWithDelay("Option invalide. Tape <b>a</b> pour Chifoumi, <b>b</b> pour les billes, <b>c</b> pour les Dames, <b>d</b> pour les Échecs ou <b>e</b> pour Soccer Punch.", 'surprised', '😲 Surprised');
                 }
                 return;
             }
 
+
+            /* ============================================================
+               CONFIGURATION SOCCER PUNCH
+               1) niveau de Jarvis
+               2) nombre de joueurs : 3 / 4 / 5
+            ============================================================ */
+            if (currentMode === 'soccer_setup') {
+                const setupValue = normalizeText(val);
+                if (soccerPunch.setupStep === 'difficulty') {
+                    if (setupValue === 'a' || setupValue === 'facile') {
+                        soccerPunch.difficulty = 'easy';
+                        soccerPunch.difficultyLabel = 'Facile';
+                    } else if (setupValue === 'b' || setupValue === 'moyen') {
+                        soccerPunch.difficulty = 'medium';
+                        soccerPunch.difficultyLabel = 'Moyen';
+                    } else if (setupValue === 'c' || setupValue === 'difficile') {
+                        soccerPunch.difficulty = 'hard';
+                        soccerPunch.difficultyLabel = 'Difficile';
+                    } else {
+                        jarvisReplyWithDelay("Niveau invalide 😅. Tape <b>a</b> pour facile, <b>b</b> pour moyen ou <b>c</b> pour difficile.", 'surprised', '😲 Surprised');
+                        return;
+                    }
+                    soccerPunch.setupStep = 'players';
+                    jarvisReplyWithDelay(
+                        `Parfait ! Niveau de Jarvis : <b>${soccerPunch.difficultyLabel}</b>.<br><br>` +
+                        "Combien de joueurs veux-tu dans ton équipe ?<br><br>" +
+                        "<b>a</b> — 3 joueurs 🔵<br>" +
+                        "<b>b</b> — 4 joueurs 🔵<br>" +
+                        "<b>c</b> — 5 joueurs 🔵",
+                        'thinking',
+                        '🧠 Thinking'
+                    );
+                    return;
+                }
+                if (soccerPunch.setupStep === 'players') {
+                    if (setupValue === 'a' || setupValue === '3' || setupValue.includes('3')) soccerPunch.playerCount = 3;
+                    else if (setupValue === 'b' || setupValue === '4' || setupValue.includes('4')) soccerPunch.playerCount = 4;
+                    else if (setupValue === 'c' || setupValue === '5' || setupValue.includes('5')) soccerPunch.playerCount = 5;
+                    else {
+                        jarvisReplyWithDelay("Nombre invalide 😅. Tape <b>a</b> pour 3 joueurs, <b>b</b> pour 4 ou <b>c</b> pour 5.", 'surprised', '😲 Surprised');
+                        return;
+                    }
+                    soccerPunch.setupStep = 'ready';
+                    jarvisReplyWithDelay(
+                        `C'est parti ! <b>${soccerPunch.playerCount} joueurs</b>, niveau <b>${soccerPunch.difficultyLabel}</b>.<br><br>Je prépare le terrain… ⚽`,
+                        'thinking',
+                        '🧠 Thinking',
+                        () => startSoccerPunchGame()
+                    );
+                    return;
+                }
+                return;
+            }
 
             /* ============================================================
                CONFIGURATION DES ÉCHECS
@@ -5523,42 +5606,256 @@
 
         /* ================================================================
            SOCCER PUNCH JARVIS — adaptation locale du Soccer Punch LG.
-           Jeu de football à pièces : direction + puissance, rebonds,
-           buts et match en 20 tours. Jarvis joue automatiquement.
+           Jeu de football à pièces : direction + puissance, rebonds, collisions à impulsion,
+           niveaux de difficulté, 3 à 5 joueurs et match de 10 minutes.
         ================================================================ */
-        const soccerPunch={canvas:null,ctx:null,W:960,H:540,raf:null,active:false,round:1,maxRounds:20,userScore:0,jarvisScore:0,turn:'user',selected:null,aiming:false,aim:{x:0,y:0},power:0,lastTime:0,pauseUntil:0,players:[],ball:null};
-        function soccerPlayer(team,x,y,index){return{team,x,y,index,vx:0,vy:0,r:25,active:true};}
-        function soccerResetPositions(){soccerPunch.players=[soccerPlayer('user',115,165,0),soccerPlayer('user',185,270,1),soccerPlayer('user',115,375,2),soccerPlayer('jarvis',845,165,0),soccerPlayer('jarvis',775,270,1),soccerPlayer('jarvis',845,375,2)];soccerPunch.ball={x:480,y:270,vx:0,vy:0,r:13};soccerPunch.selected=null;soccerPunch.aiming=false;soccerPunch.power=0;}
+        const soccerPunch={canvas:null,ctx:null,W:960,H:540,raf:null,active:false,userScore:0,jarvisScore:0,turn:'user',selected:null,cursorIndex:0,phase:'select',angle:0,power:.55,lastTime:0,pauseUntil:0,players:[],ball:null,bindReady:false,matchDuration:600000,matchDeadline:0,timeLeft:600000,finalized:false,setupStep:'difficulty',difficulty:'medium',difficultyLabel:'Moyen',playerCount:3};
+        const SOCCER_POWER_MIN=.12,SOCCER_POWER_MAX=1,SOCCER_POWER_STEP=.05,SOCCER_ANGLE_STEP=Math.PI/45;
+        const SOCCER_SHOT_MIN_SPEED=1150,SOCCER_SHOT_MAX_SPEED=2850;
+        const SOCCER_BALL_MASS=1.35,SOCCER_PLAYER_MASS=3.2;
+        const SOCCER_DIFFICULTY={easy:{accuracy:.58,defense:.45,attack:.45,reaction:720},medium:{accuracy:.78,defense:.72,attack:.72,reaction:500},hard:{accuracy:.93,defense:.94,attack:.92,reaction:300}};
+        function soccerPlayer(team,x,y,index){return{team,x,y,index,vx:0,vy:0,r:25,mass:SOCCER_PLAYER_MASS,active:true};}
+        function soccerResetPositions(){
+            const n=Math.max(3,Math.min(5,soccerPunch.playerCount||3));
+            const ys=n===3?[165,270,375]:n===4?[125,215,325,415]:[95,185,270,355,445];
+            const userX=n===3?[115,185,115]:n===4?[105,170,170,105]:[100,165,195,165,100];
+            const jarvisX=n===3?[845,775,845]:n===4?[855,790,790,855]:[860,795,765,795,860];
+            soccerPunch.players=[];
+            for(let i=0;i<n;i++)soccerPunch.players.push(soccerPlayer('user',userX[i],ys[i],i));
+            for(let i=0;i<n;i++)soccerPunch.players.push(soccerPlayer('jarvis',jarvisX[i],ys[i],i));
+            soccerPunch.ball={x:480,y:270,vx:0,vy:0,r:13,mass:SOCCER_BALL_MASS};
+            soccerPunch.selected=null;soccerPunch.cursorIndex=0;soccerPunch.phase='select';soccerPunch.angle=0;soccerPunch.power=.55;
+        }
         function soccerShowBoard(){const s=document.getElementById('soccer-stage'),m=document.getElementById('messages-container'),i=document.getElementById('input-bar-container');if(s)s.classList.add('active');if(m)m.style.display='none';if(i)i.style.display='none';}
         function hideSoccerPunchBoard(){const s=document.getElementById('soccer-stage'),m=document.getElementById('messages-container'),i=document.getElementById('input-bar-container');if(s)s.classList.remove('active');if(m)m.style.display='';if(i)i.style.display='';soccerPunch.active=false;if(soccerPunch.raf){cancelAnimationFrame(soccerPunch.raf);soccerPunch.raf=null;}}
-        function soccerHUD(){const u=document.getElementById('soccer-user-score'),j=document.getElementById('soccer-jarvis-score'),r=document.getElementById('soccer-round-badge');if(u)u.textContent=soccerPunch.userScore;if(j)j.textContent=soccerPunch.jarvisScore;if(r)r.textContent=`Tour ${Math.min(soccerPunch.round,soccerPunch.maxRounds)}/${soccerPunch.maxRounds}`;}
+        function soccerFormatTime(ms){ms=Math.max(0,Math.ceil(ms/1000));const m=Math.floor(ms/60),sec=ms%60;return `${m}:${String(sec).padStart(2,'0')}`;}
+        function soccerHUD(){const u=document.getElementById('soccer-user-score'),j=document.getElementById('soccer-jarvis-score'),r=document.getElementById('soccer-round-badge');if(u)u.textContent=soccerPunch.userScore;if(j)j.textContent=soccerPunch.jarvisScore;if(r)r.textContent=`⏱ ${soccerFormatTime(soccerPunch.timeLeft)}`;}
         function soccerStatus(t){const e=document.getElementById('soccer-status');if(e)e.innerHTML=t;}
-        function soccerRoundStart(){soccerResetPositions();soccerPunch.turn='user';soccerPunch.pauseUntil=performance.now()+300;soccerHUD();soccerStatus('<b>À toi.</b> Sélectionne un joueur bleu et tire.');setExpression('happy','😊 Happy');soccerDraw();}
-        function startSoccerPunchGame(){const c=document.getElementById('soccer-punch-canvas');if(!c)return;soccerPunch.canvas=c;soccerPunch.ctx=c.getContext('2d');soccerPunch.active=true;soccerPunch.round=1;soccerPunch.userScore=0;soccerPunch.jarvisScore=0;soccerPunch.turn='user';soccerPunch.lastTime=performance.now();soccerShowBoard();updateInputsVisibility();document.getElementById('badge-mode').innerText='Mode: Soccer Punch';soccerRoundStart();soccerBindControls();if(soccerPunch.raf)cancelAnimationFrame(soccerPunch.raf);soccerPunch.raf=requestAnimationFrame(soccerLoop);}
-        function restartSoccerPunchGame(){if(!soccerPunch.canvas){startSoccerPunchGame();return;}soccerPunch.active=true;soccerPunch.round=1;soccerPunch.userScore=0;soccerPunch.jarvisScore=0;soccerShowBoard();updateInputsVisibility();document.getElementById('badge-mode').innerText='Mode: Soccer Punch';soccerRoundStart();if(!soccerPunch.raf){soccerPunch.lastTime=performance.now();soccerPunch.raf=requestAnimationFrame(soccerLoop);}}
+        function soccerRoundStart(){soccerResetPositions();soccerPunch.turn='user';soccerPunch.pauseUntil=performance.now()+300;soccerHUD();soccerStatus(`<b>À toi.</b> ${soccerPunch.playerCount} joueurs • ↑ ↓ ← → puis <b>OK / Entrée</b>.`);soccerDraw();}
+        function soccerFinishMatch(reason='timer'){if(!soccerPunch.active||soccerPunch.finalized)return;soccerPunch.finalized=true;soccerPunch.turn='finished';soccerPunch.timeLeft=0;soccerHUD();const u=soccerPunch.userScore,j=soccerPunch.jarvisScore;if(u>j){setExpression('sly','🏆 Victoire');soccerStatus(`<b>FIN DU MATCH !</b><br>Tu gagnes <b>${u}–${j}</b> 🏆`);}else if(j>u){setExpression('sly','😈 Victoire Jarvis');soccerStatus(`<b>FIN DU MATCH !</b><br>Jarvis gagne <b>${j}–${u}</b> 😈`);}else{setExpression('confident','🤝 Match nul');soccerStatus(`<b>FIN DU MATCH !</b><br>Match nul <b>${u}–${j}</b> 🤝`);}}
+        function soccerUpdateTimer(now){if(!soccerPunch.active||soccerPunch.finalized)return;const remaining=soccerPunch.matchDeadline-now;soccerPunch.timeLeft=Math.max(0,remaining);soccerHUD();if(remaining<=0)soccerFinishMatch('timer');}
+        function startSoccerPunchGame(){const c=document.getElementById('soccer-punch-canvas');if(!c)return;soccerPunch.canvas=c;soccerPunch.ctx=c.getContext('2d');soccerPunch.active=true;soccerPunch.userScore=0;soccerPunch.jarvisScore=0;soccerPunch.turn='user';soccerPunch.finalized=false;soccerPunch.matchDeadline=performance.now()+soccerPunch.matchDuration;soccerPunch.timeLeft=soccerPunch.matchDuration;soccerPunch.lastTime=performance.now();soccerShowBoard();updateInputsVisibility();document.getElementById('badge-mode').innerText=`Mode: Soccer Punch • ${soccerPunch.difficultyLabel} • ${soccerPunch.playerCount} joueurs • 10 min`;soccerRoundStart();soccerBindControls();if(soccerPunch.raf)cancelAnimationFrame(soccerPunch.raf);soccerPunch.raf=requestAnimationFrame(soccerLoop);}
+        function restartSoccerPunchGame(){if(!soccerPunch.canvas){startSoccerPunchGame();return;}soccerPunch.active=true;soccerPunch.userScore=0;soccerPunch.jarvisScore=0;soccerPunch.finalized=false;soccerPunch.matchDeadline=performance.now()+soccerPunch.matchDuration;soccerPunch.timeLeft=soccerPunch.matchDuration;soccerShowBoard();updateInputsVisibility();document.getElementById('badge-mode').innerText=`Mode: Soccer Punch • ${soccerPunch.difficultyLabel} • ${soccerPunch.playerCount} joueurs • 10 min`;soccerRoundStart();if(!soccerPunch.raf){soccerPunch.lastTime=performance.now();soccerPunch.raf=requestAnimationFrame(soccerLoop);}}
         function exitSoccerPunchGame(){hideSoccerPunchBoard();currentMode='game_menu';chatStep='menu';updateInputsVisibility();document.getElementById('badge-mode').innerText='Menu Jeux';jarvisReplyWithDelay('Retour au menu des jeux 🎲. Choisis a Chifoumi, b Billes, c Dames, d Échecs ou e Soccer Punch.','happy','😊 Happy');}
         function soccerPoint(e){const r=soccerPunch.canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*soccerPunch.W/r.width,y:(e.clientY-r.top)*soccerPunch.H/r.height};}
-        function soccerFindPlayer(pt){let best=null,bd=1e9;for(const p of soccerPunch.players)if(p.team==='user'){const d=Math.hypot(pt.x-p.x,pt.y-p.y);if(d<p.r*1.45&&d<bd){best=p;bd=d;}}return best;}
-        function soccerBeginAim(pt){if(!soccerPunch.active||soccerPunch.turn!=='user'||performance.now()<soccerPunch.pauseUntil)return;const p=soccerFindPlayer(pt);if(!p)return;soccerPunch.selected=p;soccerPunch.aiming=true;soccerPunch.aim={...pt};soccerPunch.power=0;soccerStatus('Tire dans la direction voulue puis <b>relâche</b> ⚽');soccerDraw();}
-        function soccerMoveAim(pt){if(!soccerPunch.aiming||!soccerPunch.selected)return;soccerPunch.aim={...pt};soccerPunch.power=Math.min(1,Math.hypot(pt.x-soccerPunch.selected.x,pt.y-soccerPunch.selected.y)/170);soccerDraw();}
-        function soccerReleaseAim(){if(!soccerPunch.aiming||!soccerPunch.selected)return;const p=soccerPunch.selected,dx=p.x-soccerPunch.aim.x,dy=p.y-soccerPunch.aim.y,len=Math.hypot(dx,dy);if(len<10){soccerPunch.aiming=false;soccerPunch.power=0;soccerDraw();return;}const power=Math.max(.18,Math.min(1,len/170)),speed=390+power*610;p.vx=dx/len*speed;p.vy=dy/len*speed;soccerPunch.aiming=false;soccerPunch.power=0;soccerPunch.turn='physics_user';soccerPunch.selected=null;soccerStatus('Le tir est parti… ⚽');setExpression('thinking','🧠 Thinking');}
-        function soccerBindControls(){if(soccerPunch.canvas.dataset.bound==='1')return;soccerPunch.canvas.dataset.bound='1';const c=soccerPunch.canvas;c.addEventListener('pointerdown',e=>{e.preventDefault();c.setPointerCapture?.(e.pointerId);soccerBeginAim(soccerPoint(e));});c.addEventListener('pointermove',e=>{if(soccerPunch.aiming){e.preventDefault();soccerMoveAim(soccerPoint(e));}});c.addEventListener('pointerup',e=>{if(soccerPunch.aiming){e.preventDefault();soccerMoveAim(soccerPoint(e));soccerReleaseAim();}});c.addEventListener('pointercancel',soccerReleaseAim);window.addEventListener('keydown',e=>{if(!soccerPunch.active)return;if(e.key.toLowerCase()==='r'){e.preventDefault();restartSoccerPunchGame();}else if(e.key==='Escape'){e.preventDefault();exitSoccerPunchGame();}});}
+        function soccerUserPlayers(){return soccerPunch.players.filter(p=>p.team==='user');}
+        function soccerFindPlayer(pt){let best=null,bd=1e9;for(const p of soccerUserPlayers()){const d=Math.hypot(pt.x-p.x,pt.y-p.y);if(d<p.r*1.6&&d<bd){best=p;bd=d;}}return best;}
+        function soccerSetSelected(p,fromTouch=false){if(!p)return;soccerPunch.selected=p;soccerPunch.cursorIndex=p.index;soccerPunch.phase='aim';const dx=soccerPunch.ball.x-p.x,dy=soccerPunch.ball.y-p.y;soccerPunch.angle=Math.atan2(dy,dx);soccerPunch.power=.55;soccerStatus(fromTouch?'Oriente la flèche. Retouche le joueur pour régler la puissance.':'Joueur sélectionné. ↑ ↓ = direction à 360° • ← → = puissance • OK = tirer.');soccerDraw();}
+        function soccerBeginTouch(pt){if(!soccerPunch.active||soccerPunch.turn!=='user'||performance.now()<soccerPunch.pauseUntil)return;const p=soccerFindPlayer(pt);if(!p)return;if(soccerPunch.selected&&p===soccerPunch.selected&&soccerPunch.phase==='aim'){soccerPunch.phase='power';soccerStatus('<b>Puissance :</b> ← diminue • → augmente • retouche le joueur pour tirer.');soccerDraw();return;}soccerSetSelected(p,true);}
+        function soccerTouchRotate(pt){if(!soccerPunch.selected||soccerPunch.phase!=='aim')return;const p=soccerPunch.selected;const dx=pt.x-p.x,dy=pt.y-p.y;if(Math.hypot(dx,dy)<8)return;soccerPunch.angle=Math.atan2(dy,dx);soccerDraw();}
+        function soccerPlayerAtPoint(pt){return soccerFindPlayer(pt);}
+        function soccerMoveCursor(key){const ps=soccerUserPlayers();const cur=soccerPunch.selected||ps[soccerPunch.cursorIndex]||ps[0];let best=cur,bestScore=Infinity;const dirs={ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1}};const d=dirs[key];if(!d)return;for(const p of ps){if(p===cur)continue;const vx=p.x-cur.x,vy=p.y-cur.y,dist=Math.hypot(vx,vy)||1,dot=(vx*d.x+vy*d.y)/dist;if(dot<.35)continue;const score=dist/(dot*.85);if(score<bestScore){bestScore=score;best=p;}}if(best===cur){let idx=ps.indexOf(cur);idx=(idx+(key==='ArrowRight'||key==='ArrowDown'?1:-1)+ps.length)%ps.length;best=ps[idx];}soccerPunch.selected=best;soccerPunch.cursorIndex=best.index;soccerPunch.phase='select';soccerStatus(`<b>Joueur ${best.index+1}</b> sélectionné. Appuie sur OK / Entrée.`);soccerDraw();}
+        function soccerRotateKeyboard(delta){if(!soccerPunch.selected){soccerMoveCursor(delta>0?'ArrowDown':'ArrowUp');return;}soccerPunch.phase='aim';soccerPunch.angle=(soccerPunch.angle+delta*SOCCER_ANGLE_STEP+Math.PI*2)%(Math.PI*2);soccerStatus('Direction <b>360°</b>. ← → = puissance • OK / Entrée = tirer.');soccerDraw();}
+        function soccerAdjustPower(delta){if(!soccerPunch.selected)return;soccerPunch.phase='power';soccerPunch.power=Math.max(SOCCER_POWER_MIN,Math.min(SOCCER_POWER_MAX,soccerPunch.power+delta*SOCCER_POWER_STEP));soccerStatus(`<b>Puissance ${Math.round(soccerPunch.power*100)}%</b> • ← / → pour régler • OK / Entrée pour tirer.`);soccerDraw();}
+        function soccerFire(){if(!soccerPunch.active||soccerPunch.turn!=='user'||!soccerPunch.selected)return;if(soccerPunch.phase==='select'){soccerPunch.phase='aim';soccerStatus('Direction 360°. ↑ ↓ pour tourner, ← → pour la puissance, OK pour tirer.');soccerDraw();return;}const p=soccerPunch.selected;const speed=SOCCER_SHOT_MIN_SPEED+(SOCCER_SHOT_MAX_SPEED-SOCCER_SHOT_MIN_SPEED)*soccerPunch.power;p.vx=Math.cos(soccerPunch.angle)*speed;p.vy=Math.sin(soccerPunch.angle)*speed;const q=soccerPunch.ball;const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<p.r+q.r+42){const boost=1+Math.max(0,(70-d)/70)*.45;q.vx+=Math.cos(soccerPunch.angle)*speed*1.22*boost;q.vy+=Math.sin(soccerPunch.angle)*speed*1.22*boost;}soccerPunch.phase='select';soccerPunch.selected=null;soccerPunch.turn='physics_user';soccerStatus('Tir déclenché ! ⚽');setExpression('thinking','🧠 Thinking');}
+        function soccerCancel(){if(!soccerPunch.selected)return;soccerPunch.selected=null;soccerPunch.phase='select';soccerStatus('Choisis un autre joueur. ↑ ↓ ← → pour naviguer, OK pour sélectionner.');soccerDraw();}
+        function soccerHandleKey(key){if(!soccerPunch.active)return false;if(key==='r'||key==='R'){restartSoccerPunchGame();return true;}if(key==='Escape'){exitSoccerPunchGame();return true;}if(key==='Backspace'){soccerCancel();return true;}if(soccerPunch.turn!=='user')return true;if(key==='Enter'){soccerFire();return true;}if(soccerPunch.phase==='select'){if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(key))soccerMoveCursor(key);return true;}if(key==='ArrowUp'){soccerRotateKeyboard(-1);return true;}if(key==='ArrowDown'){soccerRotateKeyboard(1);return true;}if(key==='ArrowLeft'){soccerAdjustPower(-1);return true;}if(key==='ArrowRight'){soccerAdjustPower(1);return true;}return true;}
+        function soccerBindControls(){if(soccerPunch.bindReady)return;soccerPunch.bindReady=true;const c=soccerPunch.canvas;c.addEventListener('pointerdown',e=>{if(!soccerPunch.active||soccerPunch.turn!=='user')return;e.preventDefault();c.setPointerCapture?.(e.pointerId);soccerBeginTouch(soccerPoint(e));});c.addEventListener('pointermove',e=>{if(!soccerPunch.active||soccerPunch.turn!=='user')return;if(soccerPunch.phase==='aim'&&soccerPunch.selected){e.preventDefault();soccerTouchRotate(soccerPoint(e));}});c.addEventListener('pointerup',e=>{if(soccerPunch.active&&soccerPunch.phase==='aim'&&soccerPunch.selected){e.preventDefault();}});c.addEventListener('pointercancel',()=>{});document.querySelectorAll('[data-soccer-key]').forEach(btn=>btn.addEventListener('pointerdown',e=>{e.preventDefault();soccerHandleKey(btn.dataset.soccerKey);}));window.addEventListener('keydown',e=>{if(!soccerPunch.active)return;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter','Backspace','Escape'].includes(e.key)||e.key.toLowerCase()==='r'){e.preventDefault();e.stopPropagation();soccerHandleKey(e.key);}});}
         function soccerBounds(){return{l:16,r:944,t:16,b:524};}
-        function soccerReflect(p){const b=soccerBounds();if(p.x-p.r<b.l){p.x=b.l+p.r;p.vx=Math.abs(p.vx)*.88;}if(p.x+p.r>b.r){p.x=b.r-p.r;p.vx=-Math.abs(p.vx)*.88;}if(p.y-p.r<b.t){p.y=b.t+p.r;p.vy=Math.abs(p.vy)*.88;}if(p.y+p.r>b.b){p.y=b.b-p.r;p.vy=-Math.abs(p.vy)*.88;}}
-        function soccerReflectBall(){const b=soccerBounds(),q=soccerPunch.ball;if(q.x-q.r<b.l){q.x=b.l+q.r;q.vx=Math.abs(q.vx)*.94;}if(q.x+q.r>b.r){q.x=b.r-q.r;q.vx=-Math.abs(q.vx)*.94;}if(q.y-q.r<b.t){q.y=b.t+q.r;q.vy=Math.abs(q.vy)*.94;}if(q.y+q.r>b.b){q.y=b.b-q.r;q.vy=-Math.abs(q.vy)*.94;}}
-        function soccerCollide(a,b,e=.92){const dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy,min=a.r+b.r;if(d2>=min*min||d2<.001)return false;const d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(min-d)/2;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;const rvx=b.vx-a.vx,rvy=b.vy-a.vy,vel=rvx*nx+rvy*ny;if(vel>0)return true;const imp=-(1+e)*vel/2;a.vx-=imp*nx;a.vy-=imp*ny;b.vx+=imp*nx;b.vy+=imp*ny;return true;}
+        function soccerReflect(p){const b=soccerBounds();if(p.x-p.r<b.l){p.x=b.l+p.r;p.vx=Math.abs(p.vx)*.9;}if(p.x+p.r>b.r){p.x=b.r-p.r;p.vx=-Math.abs(p.vx)*.9;}if(p.y-p.r<b.t){p.y=b.t+p.r;p.vy=Math.abs(p.vy)*.9;}if(p.y+p.r>b.b){p.y=b.b-p.r;p.vy=-Math.abs(p.vy)*.9;}}
+        function soccerReflectBall(){const b=soccerBounds(),q=soccerPunch.ball;if(q.x-q.r<b.l){q.x=b.l+q.r;q.vx=Math.abs(q.vx)*.96;}if(q.x+q.r>b.r){q.x=b.r-q.r;q.vx=-Math.abs(q.vx)*.96;}if(q.y-q.r<b.t){q.y=b.t+q.r;q.vy=Math.abs(q.vy)*.96;}if(q.y+q.r>b.b){q.y=b.b-q.r;q.vy=-Math.abs(q.vy)*.96;}}
+        function soccerCollide(a,b,e=.94){
+            const dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy,min=a.r+b.r;
+            if(d2>=min*min)return false;
+            let d=Math.sqrt(d2);
+            let nx=1,ny=0;
+            if(d>0.0001){nx=dx/d;ny=dy/d;}
+            else{
+                const rv=Math.hypot(b.vx-a.vx,b.vy-a.vy)||1;
+                nx=(b.vx-a.vx)/rv;ny=(b.vy-a.vy)/rv;
+                d=0;
+            }
+
+            // Séparation complète : le ballon ne peut jamais rester à l'intérieur
+            // d'un joueur. C'est important pour éviter les traversées à haute vitesse.
+            const penetration=min-d;
+            const invA=a.invMass??1,invB=b.invMass??1,total=invA+invB||1;
+            a.x-=nx*penetration*(invA/total);
+            a.y-=ny*penetration*(invA/total);
+            b.x+=nx*penetration*(invB/total);
+            b.y+=ny*penetration*(invB/total);
+
+            const rvx=b.vx-a.vx,rvy=b.vy-a.vy;
+            const vel=rvx*nx+rvy*ny;
+            // Si les objets s'éloignent déjà, la correction de position suffit.
+            if(vel>=0)return true;
+
+            // Collision élastique : le ballon repart dans la direction opposée
+            // à la normale du joueur, comme contre une paroi.
+            const restitution=e;
+            const impulse=-(1+restitution)*vel/(invA+invB||1);
+            a.vx-=impulse*invA*nx;
+            a.vy-=impulse*invA*ny;
+            b.vx+=impulse*invB*nx;
+            b.vy+=impulse*invB*ny;
+            return true;
+        }
+
+        function soccerCollideBallWithPlayers(){
+            const q=soccerPunch.ball;
+            for(const p of soccerPunch.players){
+                const dx=q.x-p.x,dy=q.y-p.y,min=q.r+p.r,d2=dx*dx+dy*dy;
+                if(d2>=min*min)continue;
+                let d=Math.sqrt(d2),nx=1,ny=0;
+                if(d>0.0001){nx=dx/d;ny=dy/d;}else{
+                    const rv=Math.hypot(q.vx-p.vx,q.vy-p.vy)||1;
+                    nx=(q.vx-p.vx)/rv;ny=(q.vy-p.vy)/rv;d=0;
+                }
+                // Séparation : aucun traversée, même à grande vitesse.
+                const penetration=min-d;
+                q.x+=nx*(penetration+.5);q.y+=ny*(penetration+.5);
+
+                // Collision à deux corps : une partie de l'impulsion du ballon
+                // est transmise au joueur. Plus le ballon arrive vite, plus le
+                // joueur est repoussé. Le ballon repart lui aussi avec le rebond.
+                const rvx=q.vx-p.vx,rvy=q.vy-p.vy;
+                const normalSpeed=rvx*nx+rvy*ny;
+                if(normalSpeed<0){
+                    const restitution=.92;
+                    const invBall=1/q.mass,invPlayer=1/p.mass;
+                    const impulse=-(1+restitution)*normalSpeed/(invBall+invPlayer);
+                    q.vx+=impulse*invBall*nx;
+                    q.vy+=impulse*invBall*ny;
+                    p.vx-=impulse*invPlayer*nx;
+                    p.vy-=impulse*invPlayer*ny;
+                    // légère composante tangentielle pour donner un contact vivant
+                    // sans transformer le joueur en projectile incontrôlable.
+                    const tangent=rvx*(-ny)+rvy*nx;
+                    const tangentialPush=Math.max(-650,Math.min(650,tangent*.035));
+                    p.vx+=(-ny)*tangentialPush/p.mass;
+                    p.vy+=( nx)*tangentialPush/p.mass;
+                }
+            }
+        }
         function soccerGoal(){const q=soccerPunch.ball;if(q.x-q.r<=16&&q.y>190&&q.y<350)return'jarvis';if(q.x+q.r>=944&&q.y>190&&q.y<350)return'user';return null;}
-        function soccerScoreGoal(side){if(side==='user')soccerPunch.userScore++;else soccerPunch.jarvisScore++;soccerHUD();soccerStatus(`<b>${side==='user'?'Tu marques ! ⚽🏆':'Jarvis marque ! ⚽😈'}</b>`);setExpression(side==='user'?'happy':'sly',side==='user'?'😊 Happy':'😏 Sournoise');if(soccerPunch.round>=soccerPunch.maxRounds){const u=soccerPunch.userScore,j=soccerPunch.jarvisScore;setTimeout(()=>{soccerStatus(u>j?`Fin des 20 tours : <b>tu gagnes ${u}–${j}</b> 🏆 — Nouvelle partie ?`:u<j?`Fin des 20 tours : <b>Jarvis gagne ${j}–${u}</b> 😈 — Nouvelle partie ?`:`Fin des 20 tours : <b>match nul ${u}–${j}</b> 🤝 — Nouvelle partie ?`);soccerPunch.turn='finished';},350);return;}soccerPunch.turn='goal_pause';setTimeout(()=>{if(soccerPunch.active){soccerPunch.round++;soccerRoundStart();}},800);}
-        function soccerJarvisTurn(){if(!soccerPunch.active||soccerPunch.turn!=='jarvis')return;const q=soccerPunch.ball,ps=soccerPunch.players.filter(p=>p.team==='jarvis');ps.sort((a,b)=>Math.hypot(a.x-q.x,a.y-q.y)-Math.hypot(b.x-q.x,b.y-q.y));const p=ps[0];const tx=65+Math.random()*45,ty=190+Math.random()*160,dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy)||1,n=(Math.random()-.5)*.22;p.vx=(dx/d+n)*Math.min(850,520+Math.random()*330);p.vy=(dy/d+n)*Math.min(850,520+Math.random()*330);soccerPunch.turn='physics_jarvis';soccerStatus('Jarvis frappe… 🤖⚽');setExpression('thinking','🧠 Thinking');}
-        function soccerAfterPhysics(){if(soccerPunch.turn==='physics_user'){soccerPunch.turn='jarvis';setTimeout(soccerJarvisTurn,350);}else if(soccerPunch.turn==='physics_jarvis'){soccerPunch.turn='user';soccerStatus('<b>À toi.</b> Sélectionne un joueur bleu et tire.');setExpression('happy','😊 Happy');}}
-        function soccerUpdate(dt){if(!soccerPunch.active)return;const f=Math.min(dt/1000,.032),moving=soccerPunch.turn==='physics_user'||soccerPunch.turn==='physics_jarvis';if(!moving)return;for(const p of soccerPunch.players){p.x+=p.vx*f;p.y+=p.vy*f;p.vx*=Math.pow(.0025,f);p.vy*=Math.pow(.0025,f);if(Math.hypot(p.vx,p.vy)<8)p.vx=p.vy=0;soccerReflect(p);}const q=soccerPunch.ball;q.x+=q.vx*f;q.y+=q.vy*f;q.vx*=Math.pow(.16,f);q.vy*=Math.pow(.16,f);if(Math.hypot(q.vx,q.vy)<10)q.vx=q.vy=0;soccerReflectBall();for(let i=0;i<soccerPunch.players.length;i++){soccerCollide(soccerPunch.players[i],q,.98);for(let j=i+1;j<soccerPunch.players.length;j++)soccerCollide(soccerPunch.players[i],soccerPunch.players[j],.9);}const goal=soccerGoal();if(goal){soccerScoreGoal(goal);return;}if(soccerPunch.players.every(p=>Math.hypot(p.vx,p.vy)<8)&&Math.hypot(q.vx,q.vy)<10)soccerAfterPhysics();}
+        function soccerScoreGoal(side){
+            if(soccerPunch.finalized)return;
+            if(side==='user')soccerPunch.userScore++;else soccerPunch.jarvisScore++;
+            soccerHUD();
+            soccerStatus(`<b>${side==='user'?'BUT ! Tu marques ⚽🏆':'BUT ! Jarvis marque ⚽😈'}</b>`);
+            soccerPunch.turn='goal_pause';
+            setTimeout(()=>{
+                if(!soccerPunch.active||soccerPunch.finalized)return;
+                soccerResetPositions();
+                soccerPunch.turn='user';
+                soccerPunch.phase='select';
+                soccerPunch.selected=null;
+                soccerStatus('<b>Reprise !</b> À toi. ↑ ↓ ← → puis <b>OK / Entrée</b>.');
+                soccerDraw();
+            },700);
+        }
+        function soccerChooseJarvisPlayer(){const q=soccerPunch.ball,ps=soccerPunch.players.filter(p=>p.team==='jarvis');const danger=Math.max(0,(q.x-650)/294);if(q.x>690){ps.sort((a,b)=>Math.hypot(a.x-q.x,a.y-q.y)-Math.hypot(b.x-q.x,b.y-q.y));return ps[0];}const targetY=q.y;ps.sort((a,b)=>{const sa=Math.hypot(a.x-q.x,a.y-q.y)+Math.abs(a.y-targetY)*.35-(a.x>q.x?55:0);const sb=Math.hypot(b.x-q.x,b.y-q.y)+Math.abs(b.y-targetY)*.35-(b.x>q.x?55:0);return sa-sb;});return ps[0];}
+        function soccerBestClearTarget(p){const q=soccerPunch.ball;const danger=q.x>720?1:0;let tx,ty;if(danger){tx=610+Math.random()*110;ty=170+Math.random()*200;}else{tx=330+Math.random()*180;ty=170+Math.random()*200;}const own= soccerPunch.players.filter(x=>x.team==='jarvis'&&x!==p).sort((a,b)=>Math.hypot(a.x-tx,a.y-ty)-Math.hypot(b.x-tx,b.y-ty))[0];if(own&&danger&&Math.random()<.65){tx=own.x+(own.x>q.x?30:-30);ty=own.y;}return{x:tx,y:ty};}
+        function soccerJarvisTurn(){
+            if(!soccerPunch.active||soccerPunch.turn!=='jarvis'||soccerPunch.finalized)return;
+            const q=soccerPunch.ball,ps=soccerPunch.players.filter(p=>p.team==='jarvis');
+            const cfg=SOCCER_DIFFICULTY[soccerPunch.difficulty]||SOCCER_DIFFICULTY.medium;
+            const p=soccerChooseJarvisPlayer();if(!p)return;
+            const distanceToBall=Math.hypot(q.x-p.x,q.y-p.y);
+            const ownGoalX=944,opponentGoalX=16;
+            const danger=Math.max(0,Math.min(1,(q.x-610)/310));
+            let target,power;
+
+            if(danger>.15){
+                // Défense prioritaire : viser une zone de sortie ou un partenaire
+                // placé plus à gauche, jamais un dégagement aveugle vers le haut.
+                const mates=ps.filter(x=>x!==p);
+                const mate=mates.sort((a,b)=>Math.hypot(a.x-q.x,a.y-q.y)-Math.hypot(b.x-q.x,b.y-q.y))[0];
+                const safeY=Math.max(90,Math.min(450,q.y));
+                if(mate&&Math.random()<cfg.defense){
+                    target={x:Math.max(470,mate.x-15),y:mate.y};
+                }else{
+                    target={x:560,y:safeY};
+                }
+                power=.86+.12*cfg.defense;
+                soccerStatus('Jarvis protège sa cage et choisit une sortie sûre… 🛡️⚽');
+            }else if(distanceToBall>120){
+                // Déplacement calculé vers la trajectoire probable du ballon.
+                target={x:q.x,y:q.y};power=.60+.20*cfg.accuracy;
+                soccerStatus('Jarvis anticipe la trajectoire du ballon… 🤖⚽');
+            }else{
+                // Attaque : viser la cage avec une correction de précision selon
+                // la difficulté, plutôt qu'un tir aléatoire.
+                const aimError=(1-cfg.accuracy)*55;
+                const targetY=270+(Math.random()-.5)*aimError;
+                target={x:opponentGoalX+25,y:targetY};
+                power=.74+.23*cfg.attack;
+                soccerStatus('Jarvis prépare une attaque vers ta cage… 🤖⚽');
+            }
+
+            const dx=target.x-p.x,dy=target.y-p.y,ang=Math.atan2(dy,dx);
+            const speed=SOCCER_SHOT_MIN_SPEED+(SOCCER_SHOT_MAX_SPEED-SOCCER_SHOT_MIN_SPEED)*power;
+            p.vx=Math.cos(ang)*speed;p.vy=Math.sin(ang)*speed;
+            if(distanceToBall<135){
+                let kickAngle;
+                if(danger>.15){kickAngle=Math.atan2(target.y-q.y,target.x-q.x);}
+                else{kickAngle=Math.atan2(target.y-q.y,target.x-q.x);}
+                const precisionJitter=(1-cfg.accuracy)*.16*(Math.random()-.5);
+                q.vx+=Math.cos(kickAngle+precisionJitter)*speed*1.28;
+                q.vy+=Math.sin(kickAngle+precisionJitter)*speed*1.28;
+            }
+            soccerPunch.turn='physics_jarvis';
+            setExpression('thinking','🧠 Thinking');
+            const reaction=cfg.reaction;
+            setTimeout(()=>{
+                if(soccerPunch.active&&!soccerPunch.finalized)setGameJarvisChoiceThenPlay();
+            },Math.max(120,reaction*.55));
+        }
+        function soccerAfterPhysics(){if(soccerPunch.turn==='physics_user'){soccerPunch.turn='jarvis';setTimeout(soccerJarvisTurn,450);}else if(soccerPunch.turn==='physics_jarvis'){soccerPunch.turn='user';soccerPunch.phase='select';soccerPunch.selected=null;soccerStatus('<b>À toi.</b> ↑ ↓ ← → pour choisir, OK / Entrée pour sélectionner.');}}
+        function soccerUpdate(dt){
+            if(!soccerPunch.active)return;
+            soccerUpdateTimer(performance.now());
+            if(soccerPunch.finalized)return;
+            const totalDt=Math.min(dt/1000,.032);
+            const moving=soccerPunch.turn==='physics_user'||soccerPunch.turn==='physics_jarvis';
+            if(!moving)return;
+
+            // Sous-pas de simulation : même à pleine puissance, le ballon ne peut
+            // plus traverser un joueur entre deux images. Chaque sous-pas vérifie
+            // les collisions ballon/joueurs et joueurs/joueurs.
+            const STEPS=8;
+            const f=totalDt/STEPS;
+            const q=soccerPunch.ball;
+
+            for(let step=0;step<STEPS;step++){
+                for(const p of soccerPunch.players){
+                    p.x+=p.vx*f;
+                    p.y+=p.vy*f;
+                    p.vx*=Math.pow(.012,f);
+                    p.vy*=Math.pow(.012,f);
+                    if(Math.hypot(p.vx,p.vy)<8)p.vx=p.vy=0;
+                    soccerReflect(p);
+                }
+
+                q.x+=q.vx*f;
+                q.y+=q.vy*f;
+                q.vx*=Math.pow(.28,f);
+                q.vy*=Math.pow(.28,f);
+                if(Math.hypot(q.vx,q.vy)<10)q.vx=q.vy=0;
+                soccerReflectBall();
+
+                // Le ballon est traité en premier comme une bille solide contre
+                // chacun des six joueurs. Il rebondit au lieu de les traverser.
+                soccerCollideBallWithPlayers();
+
+                for(let i=0;i<soccerPunch.players.length;i++){
+                    for(let j=i+1;j<soccerPunch.players.length;j++){
+                        soccerCollide(soccerPunch.players[i],soccerPunch.players[j],.92);
+                    }
+                }
+
+                const goal=soccerGoal();
+                if(goal){soccerScoreGoal(goal);return;}
+            }
+
+            if(soccerPunch.players.every(p=>Math.hypot(p.vx,p.vy)<8)&&Math.hypot(q.vx,q.vy)<10)soccerAfterPhysics();
+        }
         function soccerDrawField(ctx){const W=960,H=540;ctx.clearRect(0,0,W,H);ctx.fillStyle='#168c2c';ctx.fillRect(0,0,W,H);for(let i=0;i<12;i++){ctx.fillStyle=i%2?'rgba(255,255,255,.035)':'rgba(0,0,0,.035)';ctx.fillRect(i*W/12,0,W/12,H);}ctx.strokeStyle='rgba(255,255,255,.95)';ctx.lineWidth=3;ctx.strokeRect(16,16,W-32,H-32);ctx.beginPath();ctx.moveTo(W/2,16);ctx.lineTo(W/2,H-16);ctx.stroke();ctx.beginPath();ctx.arc(W/2,H/2,82,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(W/2,H/2,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeRect(16,125,142,290);ctx.strokeRect(W-158,125,142,290);ctx.strokeRect(16,190,72,160);ctx.strokeRect(W-88,190,72,160);ctx.lineWidth=5;ctx.strokeRect(0,202,30,136);ctx.strokeRect(W-30,202,30,136);ctx.lineWidth=2;ctx.strokeStyle='rgba(255,255,255,.28)';for(let y=205;y<338;y+=12){ctx.beginPath();ctx.moveTo(2,y);ctx.lineTo(28,y);ctx.stroke();ctx.beginPath();ctx.moveTo(W-2,y);ctx.lineTo(W-28,y);ctx.stroke();}}
-        function soccerDrawPlayer(ctx,p){ctx.save();ctx.translate(p.x,p.y);ctx.beginPath();ctx.arc(3,5,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.28)';ctx.fill();const g=ctx.createRadialGradient(-8,-9,2,0,0,p.r);if(p.team==='user'){g.addColorStop(0,'#fff');g.addColorStop(.35,'#dbeafe');g.addColorStop(.7,'#2563eb');g.addColorStop(1,'#12327b');}else{g.addColorStop(0,'#fff');g.addColorStop(.35,'#fee2e2');g.addColorStop(.7,'#ef4444');g.addColorStop(1,'#7f1d1d');}ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=2;ctx.stroke();if(p===soccerPunch.selected&&soccerPunch.aiming){ctx.beginPath();ctx.arc(0,0,p.r+5,0,Math.PI*2);ctx.strokeStyle='#d4af37';ctx.lineWidth=3;ctx.stroke();}ctx.restore();}
+        function soccerDrawPlayer(ctx,p){ctx.save();ctx.translate(p.x,p.y);ctx.beginPath();ctx.arc(3,5,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.28)';ctx.fill();const g=ctx.createRadialGradient(-8,-9,2,0,0,p.r);if(p.team==='user'){g.addColorStop(0,'#fff');g.addColorStop(.35,'#dbeafe');g.addColorStop(.7,'#2563eb');g.addColorStop(1,'#12327b');}else{g.addColorStop(0,'#fff');g.addColorStop(.35,'#fee2e2');g.addColorStop(.7,'#ef4444');g.addColorStop(1,'#7f1d1d');}ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=2;ctx.stroke();if(p===soccerPunch.selected){ctx.beginPath();ctx.arc(0,0,p.r+6,0,Math.PI*2);ctx.strokeStyle='#d4af37';ctx.lineWidth=3;ctx.stroke();}ctx.restore();}
         function soccerDrawBall(ctx){const b=soccerPunch.ball;ctx.beginPath();ctx.arc(b.x+2,b.y+3,b.r,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.25)';ctx.fill();ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#1f2937';ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle='#111827';for(let a=0;a<5;a++){const ang=a*Math.PI*2/5;ctx.beginPath();ctx.arc(b.x+Math.cos(ang)*5,b.y+Math.sin(ang)*5,2.4,0,Math.PI*2);ctx.fill();}}
-        function soccerDrawAim(ctx){const p=soccerPunch.selected;if(!p||!soccerPunch.aiming)return;const dx=p.x-soccerPunch.aim.x,dy=p.y-soccerPunch.aim.y,len=Math.hypot(dx,dy)||1,sc=Math.min(1,len/170),ex=p.x+dx/len*(65+110*sc),ey=p.y+dy/len*(65+110*sc);ctx.save();ctx.setLineDash([8,7]);ctx.strokeStyle='rgba(212,175,55,.95)';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='rgba(0,0,0,.45)';ctx.fillRect(p.x-44,p.y-p.r-22,88,9);ctx.fillStyle='#d4af37';ctx.fillRect(p.x-44,p.y-p.r-22,88*soccerPunch.power,9);ctx.restore();}
+        function soccerDrawAim(ctx){const p=soccerPunch.selected;if(!p||soccerPunch.phase==='select')return;const len=90+230*soccerPunch.power,ex=p.x+Math.cos(soccerPunch.angle)*len,ey=p.y+Math.sin(soccerPunch.angle)*len;ctx.save();ctx.setLineDash([10,8]);ctx.strokeStyle='rgba(212,175,55,.98)';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='rgba(212,175,55,.98)';ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-Math.cos(soccerPunch.angle-.45)*18,ey-Math.sin(soccerPunch.angle-.45)*18);ctx.lineTo(ex-Math.cos(soccerPunch.angle+.45)*18,ey-Math.sin(soccerPunch.angle+.45)*18);ctx.closePath();ctx.fill();ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(p.x-55,p.y-p.r-25,110,11);ctx.fillStyle='#d4af37';ctx.fillRect(p.x-55,p.y-p.r-25,110*soccerPunch.power,11);ctx.fillStyle='#fff';ctx.font='bold 13px Montserrat,sans-serif';ctx.fillText(`${Math.round(soccerPunch.power*100)}%`,p.x-16,p.y-p.r-31);ctx.restore();}
         function soccerDraw(){const c=soccerPunch.ctx;if(!c)return;soccerDrawField(c);soccerDrawBall(c);for(const p of soccerPunch.players)soccerDrawPlayer(c,p);soccerDrawAim(c);}
         function soccerLoop(now){if(!soccerPunch.active){soccerPunch.raf=null;return;}const dt=Math.min(40,now-(soccerPunch.lastTime||now));soccerPunch.lastTime=now;soccerUpdate(dt);soccerDraw();soccerPunch.raf=requestAnimationFrame(soccerLoop);}
-
         const CHECKERS_SIZE = 10;
         const CHECKERS_USER = 'user';
         const CHECKERS_JARVIS = 'jarvis';
